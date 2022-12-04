@@ -14,6 +14,27 @@ void create_game_header()
     cout << "\tVision the Shape and Calculate its Area before the time is over! \n";
 }
 
+// Get game level from the user
+
+void get_game_level(int &level)
+{
+    // Show levels menu
+    cout << "\nChoose the game level" << endl;
+    cout << "Easy => 1" << endl;
+    cout << "Medium => 2" << endl;
+    cout << "Hard => 3" << endl;
+    cout << "Enter the level number(1-3): ";
+    cin >> level; // read game level value
+
+    // validate the input value
+    if (level != 1 && level != 2 && level != 3)
+    {
+        // Abort the process, it the input is not valid
+        cout << "Please enter valid value" << endl;
+        abort();
+    }
+}
+
 // show the number of the current trial and the score value
 void show_score_trial(int n_trial, int m_trial, int score = 0)
 {
@@ -48,21 +69,7 @@ int main()
     cout << "\n\nPress Enter to start playing ...";
     cin.get();
 
-    // 0d. Show levels menu
-    cout << "\nChoose the game level" << endl;
-    cout << "Easy => 1" << endl;
-    cout << "Medium => 2" << endl;
-    cout << "Hard => 3" << endl;
-    cout << "Enter the level number(1-3): ";
-    cin >> level; // read game level value
-
-    // validate the input value
-    if (level != 1 && level != 2 && level != 3)
-    {
-        // Abort the process, it the input is not valid
-        cout << "Please enter valid value" << endl;
-        abort();
-    }
+    get_game_level(level);
 
     system("cls");
 
