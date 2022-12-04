@@ -3,7 +3,7 @@
 #include <unistd.h> // sleep
 #include <time.h>   // time.now time_t
 #include <conio.h>  // getch
-
+#include <string>   //to_string, length
 using namespace std;
 
 // Functions
@@ -30,7 +30,7 @@ void get_game_level(int &level)
     // validate the input value
     if (level != 1 && level != 2 && level != 3)
     {
-        // Abort the process, it the input is not valid
+        // Abort the process, if the input is not valid
         cout << "Please enter valid value" << endl;
         abort();
     }
@@ -43,6 +43,12 @@ void show_score_trial(int n_trial, int m_trial, int score = 0)
     cout << "\t\t Score: " << (score * 1.0 / m_trial) * 100.0 << "%" << endl;
 }
 
+// print n of Chars
+void print_nchars(int n, char c)
+{
+    cout << string(n, c);
+}
+
 // print a waiting message with count down N Seconds
 void start_after(int sec)
 {
@@ -51,7 +57,9 @@ void start_after(int sec)
     {
         cout << i << "s...";
         sleep(1);
-        cout << "\b\b\b\b\b";
+        // get the number of backspaces by converting (i) to string then calculate its length and add it to 4
+        int num_of_backspace = to_string(i).length() + 4;
+        print_nchars(num_of_backspace, '\b');
     }
 }
 
