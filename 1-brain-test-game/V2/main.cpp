@@ -7,46 +7,6 @@ using namespace std;
 
 // Functions
 
-// Calculate table side(width or length) according to game level
-int calc_table_side(int level, int table_size)
-{
-    switch (level)
-    {
-    // Easy level
-    case 1:
-        return 2 + rand() % table_size;
-    // Medium level
-    case 2:
-        return 4 + rand() % table_size;
-    // Hard level
-    case 3:
-        return 5 + rand() % table_size;
-
-    default:
-        return 0;
-    }
-}
-
-// Calculate timeout value according to game level
-int calc_timeout(int level)
-{
-    switch (level)
-    {
-    // Easy level
-    case 1:
-        return 5; // timeout = 5s
-    // Medium level
-    case 2:
-        return 4; // timeout = 4s
-    // Hard level
-    case 3:
-        return 3; // timeout = 3s
-
-    default:
-        return 0;
-    }
-}
-
 // Create game header
 void create_game_header()
 {
@@ -107,7 +67,7 @@ int main()
     system("cls");
 
     // calculate game timeout according to the game level
-    g_timeout = calc_timeout(level);
+    g_timeout = 6 - level;
 
     do
     {
@@ -116,8 +76,8 @@ int main()
         show_score_trial(n_trial, m_trial, score);
 
         //------Initiate Variables repeated part
-        width = calc_table_side(level, table_size);
-        length = calc_table_side(level, table_size);
+        width = (2 * level) + rand() % (table_size + (level - 1) * 2);
+        length = (2 * level) + rand() % (table_size + (level - 1) * 2);
         area = width * length;
 
         // 2b. padding top
