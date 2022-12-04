@@ -43,6 +43,18 @@ void show_score_trial(int n_trial, int m_trial, int score = 0)
     cout << "\t\t Score: " << (score * 1.0 / m_trial) * 100.0 << "%" << endl;
 }
 
+// print a waiting message with count down N Seconds
+void start_after(int sec)
+{
+    cout << "\n\t\tStart Next in ";
+    for (int i = sec; i > 0; i--)
+    {
+        cout << i << "s...";
+        sleep(1);
+        cout << "\b\b\b\b\b";
+    }
+}
+
 // Main
 int main()
 {
@@ -134,22 +146,18 @@ int main()
         // 4b. Clear Screen
         sleep(3);
         system("cls");
-
+        create_game_header();
+        show_score_trial(n_trial, m_trial, score);
         // if the trial is not the last trial
         if (n_trial < m_trial)
         {
-            for (int i = 3; i > 0; i--)
-            {
-                create_game_header();
-                show_score_trial(n_trial, m_trial, score);
-                cout << "\n\t\tStart Next in " << i << "s...\n";
-                sleep(1);
-                system("cls");
-            }
+            start_after(3);
         }
+        system("cls");
+
         n_trial++;
     }
-    
+
     // 5a. Check the number of trial
     while (n_trial <= m_trial);
 
