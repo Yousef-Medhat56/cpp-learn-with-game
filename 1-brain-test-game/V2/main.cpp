@@ -2,6 +2,7 @@
 #include <stdlib.h> // rand, srand, system
 #include <unistd.h> // sleep
 #include <time.h>   // time.now time_t
+#include <conio.h>  // getch
 
 using namespace std;
 
@@ -66,8 +67,10 @@ int main()
     // 0c. Print Game instructions
     system("cls");
     create_game_header();
-    cout << "\n\nPress Enter to start playing ...";
-    cin.get();
+
+    // ask the user to press any key to start the game
+    cout << "\n\nPress any key to start playing ...";
+    getch();
 
     get_game_level(level);
 
@@ -146,6 +149,7 @@ int main()
         }
         n_trial++;
     }
+    
     // 5a. Check the number of trial
     while (n_trial <= m_trial);
 
