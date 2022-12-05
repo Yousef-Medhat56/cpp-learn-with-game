@@ -49,6 +49,14 @@ void print_nchars(int n, char c)
     cout << string(n, c);
 }
 
+// calculate integer length
+int calc_int_length(int num){
+    //convert integer to string
+    string num_to_string = to_string(num);
+    // return the string length
+    return num_to_string.length();
+}
+
 // print a waiting message with count down N Seconds
 void start_after(int sec)
 {
@@ -57,8 +65,8 @@ void start_after(int sec)
     {
         cout << i << "s...";
         sleep(1);
-        // get the number of backspaces by converting (i) to string then calculate its length and add it to 4
-        int num_of_backspace = to_string(i).length() + 4;
+        // calculate the number of backspaces
+        int num_of_backspace = calc_int_length(i) + 4;
         print_nchars(num_of_backspace, '\b');
     }
 }
