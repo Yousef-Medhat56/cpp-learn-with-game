@@ -4,6 +4,7 @@
 #include <time.h>   // time.now time_t
 #include <conio.h>  // getch
 #include <string>   //to_string, length
+#include <iomanip>  // setw
 using namespace std;
 
 // Functions
@@ -35,23 +36,39 @@ void get_game_level(int &level)
         abort();
     }
 }
-
-// show the number of the current trial and the score value
-void show_score_trial(int n_trial, int m_trial, int score = 0)
-{
-    cout << "\n\t\tTrial: " << n_trial << "/" << m_trial;
-    cout << "\t\t Score: " << (score * 1.0 / m_trial) * 100.0 << "%" << endl;
-}
-
 // print n of Chars
 void print_nchars(int n, char c)
 {
     cout << string(n, c);
 }
 
+// show the number of the current trial and the score value
+void create_stats_header(int n_trial, int m_trial, int level, int score = 0)
+{
+    // print header 50 - in line
+    print_nchars(50, '-');
+    cout << '\n';
+    cout << "| Trial: " << n_trial << "/" << m_trial;
+    // align level into center
+    cout << setw(15) << "Level: " << level << "   ";
+    // align score into right
+    if (score > 0)
+    {
+        cout << setw(14) << "Score: " << (score * 1.0 / m_trial) * 100.0 << "% |" << endl;
+    }
+    else
+    {
+        cout << setw(15) << "Score: " << (score * 1.0 / m_trial) * 100.0 << "% |" << endl;
+    }
+
+    // print header 50 - in line
+    print_nchars(50, '-');
+}
+
 // calculate integer length
-int calc_int_length(int num){
-    //convert integer to string
+int calc_int_length(int num)
+{
+    // convert integer to string
     string num_to_string = to_string(num);
     // return the string length
     return num_to_string.length();
@@ -110,8 +127,7 @@ int main()
     do
     {
         // Create Header
-        create_game_header();
-        show_score_trial(n_trial, m_trial, score);
+        create_stats_header(n_trial, m_trial, level, score);
 
         //------Initiate Variables repeated part
         width = (2 * level) + rand() % (table_size + (level - 1) * 2);
@@ -162,8 +178,7 @@ int main()
         // 4b. Clear Screen
         sleep(3);
         system("cls");
-        create_game_header();
-        show_score_trial(n_trial, m_trial, score);
+        create_stats_header(n_trial, m_trial, level, score);
         // if the trial is not the last trial
         if (n_trial < m_trial)
         {
@@ -179,8 +194,7 @@ int main()
 
     // 6a. Game over and print score
     // Create Header
-    create_game_header();
-    cout << "\t\tGAME OVER\n";
+    cout << "\n\t\tGAME OVER\n";
     cout << "\t\tYour Score is :" << (score * 1.0 / m_trial) * 100.0 << "%\n";
 
     return 0;
