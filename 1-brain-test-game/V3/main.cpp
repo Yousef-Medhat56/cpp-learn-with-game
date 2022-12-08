@@ -5,6 +5,7 @@
 #include <conio.h>  // getch
 #include <string>   //to_string, length
 #include <iomanip>  // setw
+#include <ctype.h>  //tolower
 using namespace std;
 
 // Functions
@@ -88,114 +89,134 @@ void start_after(int sec)
     }
 }
 
+// ask the user if he wants to play again or not
+void ask_playing_again(bool &state)
+{
+    char c;
+    cout << "Press (y) if you want to play again: ";
+    cin >> c;
+    c = tolower(c);
+    // if the input doesn't equal "y"
+    if (c != 'y')
+    {
+        state = false;
+    }
+}
+
 // Main
 int main()
 {
+    // Define Constants
+    const int table_size = 5;
+    const int m_trial = 5;
+
     // 0a. Define Variable
-    int m_trial, n_trial;
+    int n_trial;
     int score, g_timeout;
     int width, length;
     int area, user_area;
-    int table_size;
     int level; // game level
     time_t user_stime, user_timeout;
-
-    // 1a. Initiate Variables
-    table_size = 5;
-    m_trial = 5;
-    n_trial = 1;
-    score = 0;
+    bool play_again = true;
 
     // 0b. Change random based on time
     srand(time(0));
 
-    // 0c. Print Game instructions
-    system("cls");
-    create_game_header();
-
-    // ask the user to press any key to start the game
-    cout << "\n\nPress any key to start playing ...";
-    getch();
-
-    get_game_level(level);
-
-    system("cls");
-
-    // calculate game timeout according to the game level
-    g_timeout = 6 - level;
-
-    do
+    while (play_again)
     {
-        // Create Header
-        create_stats_header(n_trial, m_trial, level, score);
 
-        //------Initiate Variables repeated part
-        width = (2 * level) + rand() % (table_size + (level - 1) * 2);
-        length = (2 * level) + rand() % (table_size + (level - 1) * 2);
-        area = width * length;
+        n_trial = 1; // reset trial number
+        score = 0;   // reset score
 
-        // 2b. padding top
-        cout << "\n\n";
+        // 0c. Print Game instructions
+        system("cls");
+        create_game_header();
 
-        // 2a. Draw the Rectangle
-        for (int i = 0; i < length; i++)
+        // ask the user to press any key to start the game
+        cout << "\n\nPress any key to start playing ...";
+        getch();
+
+        get_game_level(level);
+
+        system("cls");
+
+        // calculate game timeout according to the game level
+        g_timeout = 6 - level;
+
+        do
         {
-            // 2b. Padding left
-            cout << "\t\t";
-            for (int j = 0; j < width; j++)
+            // Create Header
+            create_stats_header(n_trial, m_trial, level, score);
+
+            //------Initiate Variables repeated part
+            width = (2 * level) + rand() % (table_size + (level - 1) * 2);
+            length = (2 * level) + rand() % (table_size + (level - 1) * 2);
+            area = width * length;
+
+            // 2b. padding top
+            cout << "\n\n";
+
+            // 2a. Draw the Rectangle
+            for (int i = 0; i < length; i++)
             {
-                cout << "# ";
+                // 2b. Padding left
+                cout << "\t\t";
+                for (int j = 0; j < width; j++)
+                {
+                    cout << "# ";
+                }
+                cout << "\n";
             }
-            cout << "\n";
+
+            // 3c. Set Start time
+            user_stime = time(0);
+
+            // 3a. Ask User
+            cout << "Area = ";
+            cin >> user_area;
+
+            // 3c. Set end time and calc diff
+            user_timeout = time(0) - user_stime;
+            cout << "You take " << user_timeout << "s to answer!....\n";
+
+            // 4a. Compare Answer and Give them point
+            if (user_area == area && user_timeout <= g_timeout)
+            {
+                score++;
+                cout << "\tCorrect :)\n";
+            }
+            else if (user_area != area)
+            {
+                cout << "\tWrong :( \n";
+            }
+            else
+            {
+                cout << "\tTimeout :|, try fast\n";
+            }
+
+            // 4b. Clear Screen
+            sleep(3);
+            system("cls");
+            create_stats_header(n_trial, m_trial, level, score);
+            // if the trial is not the last trial
+            if (n_trial < m_trial)
+            {
+                start_after(3);
+            }
+            system("cls");
+
+            n_trial++;
         }
 
-        // 3c. Set Start time
-        user_stime = time(0);
+        // 5a. Check the number of trial
+        while (n_trial <= m_trial);
 
-        // 3a. Ask User
-        cout << "Area = ";
-        cin >> user_area;
-
-        // 3c. Set end time and calc diff
-        user_timeout = time(0) - user_stime;
-        cout << "You take " << user_timeout << "s to answer!....\n";
-
-        // 4a. Compare Answer and Give them point
-        if (user_area == area && user_timeout <= g_timeout)
-        {
-            score++;
-            cout << "\tCorrect :)\n";
-        }
-        else if (user_area != area)
-        {
-            cout << "\tWrong :( \n";
-        }
-        else
-        {
-            cout << "\tTimeout :|, try fast\n";
-        }
-
-        // 4b. Clear Screen
-        sleep(3);
-        system("cls");
-        create_stats_header(n_trial, m_trial, level, score);
-        // if the trial is not the last trial
-        if (n_trial < m_trial)
-        {
-            start_after(3);
-        }
-        system("cls");
-
-        n_trial++;
+        // 6a. Game over and print score
+        // Create Header
+        cout << "\n\t\tGAME OVER\n";
+        cout << "\t\tYour Score is :" << (score * 1.0 / m_trial) * 100.0 << "%\n";
+        // ask the user if he wants to play again
+        ask_playing_again(play_again);
     }
-
-    // 5a. Check the number of trial
-    while (n_trial <= m_trial);
-
-    // 6a. Game over and print score
-    // Create Header
-    cout << "\n\t\tGAME OVER\n";
-    cout << "\t\tYour Score is :" << (score * 1.0 / m_trial) * 100.0 << "%\n";
-
     return 0;
 }
