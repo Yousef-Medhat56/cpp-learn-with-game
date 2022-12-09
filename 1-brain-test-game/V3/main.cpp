@@ -154,20 +154,24 @@ int main()
             area = width * length;
 
             // 2b. padding top
-            cout << "\n\n";
+            cout << "\n|" << setw(50) << "|\n";
 
             // 2a. Draw the Rectangle
             for (int i = 0; i < length; i++)
             {
-                // 2b. Padding left
-                cout << "\t\t";
+                //draw border from left
+                cout << "|" << setw(26 - (width));
                 for (int j = 0; j < width; j++)
                 {
                     cout << "# ";
                 }
-                cout << "\n";
+                //draw border from right
+                cout << setw(26 - (width)) << "|\n";
             }
-
+            // padding bottom
+            cout << "|" << setw(50) << "|\n";
+            print_nchars(50, '-');
+            cout<<"\n";
             // 3c. Set Start time
             user_stime = time(0);
 
